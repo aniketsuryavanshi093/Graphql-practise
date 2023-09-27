@@ -1,0 +1,5 @@
+{
+    "env": {
+        "MONGODB_SRV": "mongodb+srv://aniketsuryavanshi093:KxElR6RpESRzFq6g@cluster0.ewsqcfw.mongodb.net/?retryWrites=true&w=majority"
+    }
+}
