@@ -13,6 +13,10 @@ const event = new schema({
     },
     price: {
         type: Number , required: true
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     }
 })
 
