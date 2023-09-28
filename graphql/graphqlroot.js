@@ -1,5 +1,6 @@
 const Event = require("../models/events");
 const User = require("../models/users");
+const Booking = require("../models/booking");
 const bcrypt = require("bcrypt");
 
 const eventsrelation = async (eventsid) => {
@@ -28,6 +29,19 @@ const userrelation = (id) => {
     });
 };
 
+const singleevent = (id) => {
+  return Event.findById(id)
+    .then((event) => {
+      return {
+        ...event?._doc,
+        creator: userrelation.bind(this, event?._doc?.creator),
+      };
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+
 module.exports = {
   graphqlroots: {
     events: () => {
@@ -36,6 +50,19 @@ module.exports = {
           return data?.map((events) => ({
             ...events?._doc,
             creator: userrelation.bind(this, events?._doc.creator),
+          }));
+        })
+        .catch((er) => {
+          throw er;
+        });
+    },
+    bookings: () => {
+      return Booking.find()
+        .then((data) => {
+          return data?.map((booking) => ({
+            ...booking?._doc,
+            user: userrelation.bind(this, booking?._doc.user),
+            Event: singleevent.bind(this, booking?._doc.Event),
           }));
         })
         .catch((er) => {
@@ -82,6 +109,34 @@ module.exports = {
           ...result,
         });
         return data._doc;
+      } catch (error) {
+        throw error;
+      }
+    },
+    createBooking: async ({ bookingInput }) => {
+      try {
+        const res = await Booking.create({
+          Event: bookingInput.eventId,
+          user: "65151ed8e3d7bed2404ee043",
+        });
+        return {
+          ...res._doc,
+          user: userrelation.bind(this, "65151ed8e3d7bed2404ee043"),
+          Event: singleevent.bind(this, bookingInput.eventId),
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
+    cancelBooking: async ({ bookingInput }) => {
+      try {
+        const res = await Booking.findById(bookingInput.eventId);
+        await Booking.findOneAndDelete(bookingInput.eventId);
+        return {
+          ...res._doc,
+          user: userrelation.bind(this, res._doc.user),
+          Event: singleevent.bind(this, res._doc.Event),
+        };
       } catch (error) {
         throw error;
       }
