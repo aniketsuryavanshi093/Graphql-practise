@@ -4,10 +4,14 @@ const mongoose = require("mongoose");
 
 const { graphqlschema } = require("./graphql/qraphqlschema");
 const { graphqlroots } = require("./graphql/graphqlroot");
+const checkauth = require("./middleware/auth");
 const app = express();
 
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: false }));
+
+app.use(checkauth);
 
 app.use(
   "/graphql",

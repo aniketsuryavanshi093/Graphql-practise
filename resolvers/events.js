@@ -15,14 +15,17 @@ module.exports = {
         throw er;
       });
   },
-  createEvents: async ({ eventInput }) => {
+  createEvents: async ({ eventInput }, req) => {
     try {
+      if (!req.isAuth) {
+        throw Error("User not Authenticated");
+      }
       const result = {
         title: eventInput.title,
         description: eventInput.description,
         date: eventInput.date,
         price: +eventInput.price,
-        creator: "65151ed8e3d7bed2404ee043",
+        creator: req.userId,
       };
       const data = await Event.create({
         ...result,

@@ -16,6 +16,11 @@ const graphqlschema = buildSchema(`
         user: User
         Event: Event
     }
+    type AuthData{
+        userId: ID!
+        token: String!
+        expiresIn: String
+    }
     type User{
         _id: ID!
         email: String!
@@ -36,9 +41,14 @@ const graphqlschema = buildSchema(`
     input bookingInput{
         eventId: String!
     }
+    input loginInput{
+        email: String!
+        password: String!
+    }
     type rootQuery{
         events: [Event!]
         bookings: [Booking!]
+        login(loginInput: loginInput): AuthData 
     }
     type rootMutation{
         createEvents(eventInput: EventInput): Event
