@@ -21,6 +21,16 @@ module.exports = {
       throw error;
     }
   },
+  getUser: async (args, req) => {
+    if (!req.isAuth) {
+      throw Error("Unauthenticated");
+    }
+    const user = await User.findById(req.userId);
+    if (!user) {
+      throw Error("User not Exist");
+    }
+    return user?._doc;
+  },
   login: async ({ loginInput }) => {
     const user = await User.findOne({ email: loginInput.email });
     if (!user) {

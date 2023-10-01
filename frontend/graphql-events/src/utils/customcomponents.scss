@@ -1,0 +1,38 @@
+.signup_psw_input,
+.update_psw_input {
+  input {
+    padding-right: 40px;
+  }
+  input.is-invalid {
+    padding-right: 60px !important;
+  }
+  i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 10px;
+  }
+  .eye_before_error {
+    right: 1%;
+  }
+  .signup-eye-img {
+    position: absolute;
+    top: 18px;
+    right: 8px;
+  }
+  .signup-eye-imgerr {
+    position: absolute;
+    top:18px;
+    right: 32px;
+  }
+}
+.signup_psw_input {
+  .eye_after_error {
+    right: 4.5%;
+  }
+}
+
+.invalid-feedback{
+    color: red;
+    font-size: small;
+}
