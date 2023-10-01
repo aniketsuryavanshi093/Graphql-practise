@@ -48,6 +48,7 @@ const graphqlschema = buildSchema(`
     type rootQuery{
         events: [Event!]
         bookings: [Booking!]
+        getUser: User!
         login(loginInput: loginInput): AuthData 
     }
     type rootMutation{

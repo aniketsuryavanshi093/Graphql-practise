@@ -1,13 +1,14 @@
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const mongoose = require("mongoose");
-
+const cors = require("cors");
 const { graphqlschema } = require("./graphql/qraphqlschema");
 const { graphqlroots } = require("./graphql/graphqlroot");
 const checkauth = require("./middleware/auth");
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.use(express.urlencoded({ extended: false }));
 
