@@ -1,9 +1,9 @@
 const User = require("../models/users");
 const Event = require("../models/events");
 const { userrelation } = require("./merge");
-
+const AppError = require("../AuthError");
 module.exports = {
-  events: () => {
+  events: (_, req, res) => {
     return Event.find()
       .then((data) => {
         return data?.map((events) => ({
@@ -18,7 +18,7 @@ module.exports = {
   createEvents: async ({ eventInput }, req) => {
     try {
       if (!req.isAuth) {
-        throw Error("User not Authenticated");
+        AppError(403, "Unauthenticated");
       }
       const result = {
         title: eventInput.title,

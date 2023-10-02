@@ -1,12 +1,13 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/users");
 const jwt = require("jsonwebtoken");
+const AppError = require("../AuthError");
 module.exports = {
   createUser: async ({ userInput }) => {
     try {
       const user = await User.findOne({ email: userInput.email });
       if (user) {
-        throw Error("User already exists");
+        AppError(400, "User already exists");
       }
       const hashpass = await bcrypt.hash(userInput.password, 10);
       const result = {
@@ -23,18 +24,18 @@ module.exports = {
   },
   getUser: async (args, req) => {
     if (!req.isAuth) {
-      throw Error("Unauthenticated");
+      AppError(403, "Unauthenticated");
     }
     const user = await User.findById(req.userId);
     if (!user) {
-      throw Error("User not Exist");
+      AppError(400, "User not Exist");
     }
     return user?._doc;
   },
   login: async ({ loginInput }) => {
     const user = await User.findOne({ email: loginInput.email });
     if (!user) {
-      throw Error("User not Exist");
+      AppError(400, "User not Exist");
     }
     const isEqual = await bcrypt.compare(
       loginInput.password,
@@ -42,7 +43,7 @@ module.exports = {
     );
 
     if (!isEqual) {
-      throw Error("Invalid Credential");
+      AppError(400, "Invalid Credential");
     }
 
     const jwtres = jwt.sign(

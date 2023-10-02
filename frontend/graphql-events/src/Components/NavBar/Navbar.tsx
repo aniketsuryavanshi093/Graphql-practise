@@ -27,8 +27,9 @@ const NavigationBar = ({ isAuth }) => {
                 </div>
                 <Spacer x={4}></Spacer>
                 <NavbarContent className="hidden sm:flex gap-4 sm:w-full" justify="start">
+
                     {
-                        routes.map((el) => (
+                        isAuth && routes.map((el) => (
                             <>
                                 <NavbarItem>
                                     <Navlink to={el.path} >

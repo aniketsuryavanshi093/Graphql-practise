@@ -5,9 +5,11 @@ import useAuthContext from '../../Context/AuthCOntext/useAuthContext'
 import { GET_EVENTS } from '../../graphql/query'
 import { useQuery } from '@apollo/client'
 import EventsList from '../../Components/Events/EventsList'
+import ViewActivityModal from './ViewActivityModal'
 
 const Events = () => {
     const [OpenModal, setOpenModal] = useState(false)
+    const [activityModal, setActivityModal] = useState({ open: false, data: {} })
     const { user } = useAuthContext()
     const { data, loading } = useQuery(GET_EVENTS);
     console.log(data, user);
@@ -39,9 +41,15 @@ const Events = () => {
                 )
                     :
                     (
-                        <EventsList events={data?.events} user={user} />
+                        <EventsList setSelectedEvent={(data) => setActivityModal({ open: true, data })} events={data?.events} user={user} />
                     )
             }
+            {
+                activityModal.open && (
+                    <ViewActivityModal isOpen={activityModal.open} data={activityModal.data} onClose={() => setActivityModal({ open: false, data: {} })} />
+                )
+            }
+
         </div>
 
     )

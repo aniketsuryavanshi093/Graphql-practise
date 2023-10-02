@@ -25,3 +25,26 @@ mutation CreateEvents($eventInput: EventInput!) {
   }
 }
 `
+
+export const CREATE_BOOKING_MUTATION = gql`
+mutation CreateBooking($bookingInput: bookingInput!) {
+  createBooking(bookingInput: $bookingInput) {
+    _id
+        createdAt
+        updatedAt
+        Event {
+            _id
+            title
+            description
+            date
+            price
+            creator {
+                _id
+                email
+                createdAt
+                updatedAt
+            }
+        }
+  }
+}
+`;

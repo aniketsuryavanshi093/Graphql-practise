@@ -38,6 +38,10 @@ const graphqlschema = buildSchema(`
         email: String!
         password: String!
     }
+    type AuthError {
+        message: String!
+        statusCode: Int!
+      }
     input bookingInput{
         eventId: String!
     }

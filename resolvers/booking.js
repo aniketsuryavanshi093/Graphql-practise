@@ -1,3 +1,4 @@
+const AppError = require("../AuthError");
 const Booking = require("../models/booking");
 
 const { transformBooking } = require("./merge");
@@ -22,7 +23,7 @@ module.exports = {
   cancelBooking: async ({ bookingInput }, req) => {
     try {
       if (!req.isAuth) {
-        throw Error("User not Authenticated");
+        AppError(403, "Unauthenticated");
       }
       const res = await Booking.findById(bookingInput.eventId);
       await Booking.findOneAndDelete(bookingInput.eventId);
@@ -36,9 +37,9 @@ module.exports = {
   },
   bookings: (args, req) => {
     if (!req.isAuth) {
-      throw Error("User not Authenticated");
+      AppError(403, "Unauthenticated");
     }
-    return Booking.find()
+    return Booking.find({ user: req.userId })
       .then((data) => {
         return data?.map((booking) =>
           transformBooking(booking, {

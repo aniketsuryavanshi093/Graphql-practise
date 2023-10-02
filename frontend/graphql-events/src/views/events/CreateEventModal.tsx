@@ -33,7 +33,7 @@ const CreateEventModal = ({ isOpen, onClose }) => {
         // Use the `update` function to update the cache
         update(cache, { data: { createEvents } }) {
             // Read the existing data from the cache    
-            updatecaching(cache, GET_EVENTS, createEvents)
+            updatecaching(cache, GET_EVENTS, createEvents, "events")
         },
     })
     const handleSubmit = (values: { title: string; description: string; date: string; price: null }) => {
@@ -46,7 +46,7 @@ const CreateEventModal = ({ isOpen, onClose }) => {
         })
     }
     return (
-        <CustomModal isOpen={isOpen} onClose={onClose} title="Create Event">
+        <CustomModal size="md" isOpen={isOpen} onClose={onClose} title="Create Event">
             <Formik
                 initialValues={initialvalue}
                 validationSchema={eventvalidation}
