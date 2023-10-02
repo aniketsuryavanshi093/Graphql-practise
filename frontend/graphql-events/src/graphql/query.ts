@@ -25,3 +25,24 @@ query
     }
   }
 }`
+
+export const GET_BOOKINGS_QUERY = gql`
+  query {
+    bookings {
+      _id
+      createdAt
+      updatedAt
+      Event {
+        _id
+        title
+        date
+        price
+        description
+        creator{
+          email
+          _id
+        }
+      }
+    }
+  }
+`;

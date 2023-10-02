@@ -1,5 +1,4 @@
-import NavigationBar from "../../Components/NavBar/Navbar"
-import { Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader, useNavbar } from "@nextui-org/react";
+import { Tabs, Tab, Input, Link, Button, Card, CardBody, } from "@nextui-org/react";
 import { useState } from "react"
 import { Field, Form, Formik } from 'formik';
 import { loginValidation, signUpvalidation } from "../../validation/authvalidation";
@@ -24,8 +23,8 @@ const Auth = () => {
             // window.location.reload()
         },
         onError(er) {
-            toast.warn(er.message || "Something went wrong!")
-            console.log(er.message);
+            toast.warn(JSON.parse(er.message).message || "Something went wrong!")
+            console.log();
         }
     })
     const logininitialvalue = {
