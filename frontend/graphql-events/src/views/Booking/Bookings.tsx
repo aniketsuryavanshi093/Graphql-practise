@@ -28,7 +28,7 @@ const Bookings = () => {
             }
             {
                 activityModal.open && (
-                    <ViewActivityModal booking isOpen={activityModal.open} data={activityModal.data.Event} onClose={() => setActivityModal({ open: false, data: {} })} />
+                    <ViewActivityModal booking isOpen={activityModal.open} bookingid={activityModal.data._id} data={activityModal.data.Event} onClose={() => setActivityModal({ open: false, data: {} })} />
                 )
             }
         </div>

@@ -48,3 +48,19 @@ mutation CreateBooking($bookingInput: bookingInput!) {
   }
 }
 `;
+
+export const CANCEL_BOOKING_MUTATION = gql`
+  mutation CancelBooking($bookingInput: bookingInput!) {
+    cancelBooking(bookingInput: $bookingInput) {
+      _id
+      createdAt
+      updatedAt
+      Event {
+        _id
+        title
+        date
+        price
+      }
+    }
+  }
+`;

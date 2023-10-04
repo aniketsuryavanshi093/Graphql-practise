@@ -25,8 +25,8 @@ module.exports = {
       if (!req.isAuth) {
         AppError(403, "Unauthenticated");
       }
-      const res = await Booking.findById(bookingInput.eventId);
-      await Booking.findOneAndDelete(bookingInput.eventId);
+      console.log(bookingInput);
+      const res = await Booking.findByIdAndDelete(bookingInput.eventId);
       return transformBooking(res, {
         user: res._doc.user,
         Event: res._doc.Event,
