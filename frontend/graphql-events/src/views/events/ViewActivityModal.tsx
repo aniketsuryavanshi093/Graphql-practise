@@ -5,16 +5,16 @@ import useAuthContext from '../../Context/AuthCOntext/useAuthContext'
 import { Button } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { toast } from "react-toastify"
-import { CREATE_BOOKING_MUTATION } from '../../graphql/mutation'
+import { CANCEL_BOOKING_MUTATION, CREATE_BOOKING_MUTATION } from '../../graphql/mutation'
 import { useNavigate } from 'react-router-dom'
 import { GET_BOOKINGS_QUERY } from '../../graphql/query'
 import useCachinghooks from '../../hooks/useCachinghooks'
 
-const ViewActivityModal = ({ isOpen, onClose, data, booking }) => {
+const ViewActivityModal = ({ isOpen, onClose, data, booking, bookingid }) => {
     const { user } = useAuthContext()
     console.log(data);
 
-    const { updatecaching } = useCachinghooks()
+    const { updatecaching, removeDatafromCache } = useCachinghooks()
     const naviagte = useNavigate()
     const [createBooking, { loading, error }] = useMutation(CREATE_BOOKING_MUTATION, {
         onCompleted(data) {
@@ -32,6 +32,21 @@ const ViewActivityModal = ({ isOpen, onClose, data, booking }) => {
             console.log(er);
         }
     })
+    const [CancelBooking, { loading: cancelloading, }] = useMutation(CANCEL_BOOKING_MUTATION, {
+        onCompleted(data) {
+            console.log(data);
+            toast.success("Booking Cancelled Successfully")
+            setTimeout(() => {
+                onClose()
+            }, 2000);
+        },
+        update(cache, { data: { cancelBooking } }) {
+            removeDatafromCache(cache, GET_BOOKINGS_QUERY, cancelBooking, "bookings")
+        },
+        onError(er) {
+            console.log(er);
+        }
+    })
     const handleBooking = () => {
         createBooking({
             variables: {
@@ -42,7 +57,13 @@ const ViewActivityModal = ({ isOpen, onClose, data, booking }) => {
         })
     }
     const handleCancel = () => {
-
+        CancelBooking({
+            variables: {
+                bookingInput: {
+                    eventId: bookingid,
+                },
+            }
+        })
     }
     return (
         <CustomModal size={"sm"} isOpen={isOpen} onClose={onClose} title={data.title}>
@@ -64,7 +85,7 @@ const ViewActivityModal = ({ isOpen, onClose, data, booking }) => {
             <div className='flex mb-3 mt-2 justify-around'>
                 {
                     booking ? (
-                        <Button color='danger' variant="ghost" className='w-[100px]' onClick={handleCancel} isLoading={loading} type='submit'>Cancel</Button>
+                        <Button color='danger' variant="ghost" className='w-[100px]' onClick={handleCancel} isLoading={cancelloading} type='submit'>Cancel</Button>
                     )
                         :
                         user && !((user?.userId || user?._id) === data.creator._id) && (
